@@ -1,6 +1,8 @@
 const express = require("express");
-
+const {dataFieldValidation, ruleValidation, dataTypeValidation} = require("./middleware/validations");
+const {resolver} = require('./compute')
 const app = express();
+app.use(express.json());
 const port = 9000;
 
 app.get('/', (req, res) => {
@@ -17,9 +19,7 @@ app.get('/', (req, res) => {
     });
 });
 
-app.post('/validate-rule', (req, res) => {
-    res.status(200).json({data:"null"});
-});
+app.post('/validate-rule', dataTypeValidation, ruleValidation, dataFieldValidation, resolver);
 
 
 app.listen(port, err => {
